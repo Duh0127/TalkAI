@@ -1,0 +1,8 @@
+node_modules
+api/.env
+api/public/uploads/chatbot
+api/upload/
+
+frontend/node_modules
+frontend/.env
+frontend/dist
