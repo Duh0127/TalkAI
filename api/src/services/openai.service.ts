@@ -10,11 +10,39 @@ import type {
 import type { Stream } from "openai/streaming";
 import { ErrorTypes } from "../errors/ErrorTypes";
 
-const CHATBOT_INSTRUCTIONS =
-    "Voce e um chatbot util e objetivo. Responda em portugues quando o usuario escrever em portugues.";
+const BRASILIA_TIME_ZONE = "America/Sao_Paulo";
+const BRASILIA_GMT_LABEL = "GMT-3";
 
-const CONVERSATION_TITLE_INSTRUCTIONS =
-    "Voce cria titulos curtos para conversas. Responda somente com um titulo em portugues, sem aspas, com no maximo 8 palavras.";
+const getDatePart = (parts: Intl.DateTimeFormatPart[], type: string): string =>
+    parts.find((part) => part.type === type)?.value ?? "00";
+
+const getSystemDateTime = (): string => {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: BRASILIA_TIME_ZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    }).formatToParts(new Date());
+
+    const year = getDatePart(parts, "year");
+    const month = getDatePart(parts, "month");
+    const day = getDatePart(parts, "day");
+    const hour = getDatePart(parts, "hour");
+    const minute = getDatePart(parts, "minute");
+    const second = getDatePart(parts, "second");
+
+    return `${year}-${month}-${day} ${hour}:${minute}:${second} ${BRASILIA_GMT_LABEL}`;
+};
+
+const buildChatbotInstructions = (): string =>
+    `Voce e um chatbot util e objetivo. Responda em portugues quando o usuario escrever em portugues. Data e hora do sistema: ${getSystemDateTime()}.`;
+
+const buildConversationTitleInstructions = (): string =>
+    `Voce cria titulos curtos para conversas. Responda somente com um titulo em portugues, sem aspas, com no maximo 8 palavras. Data e hora do sistema: ${getSystemDateTime()}.`;
 
 export class OpenAIService {
     private client: OpenAI | null = null;
@@ -47,7 +75,7 @@ export class OpenAIService {
     ): Promise<Stream<OpenAIResponseStreamEvent>> {
         const baseParams = {
             model: this.getModel(),
-            instructions: CHATBOT_INSTRUCTIONS,
+            instructions: buildChatbotInstructions(),
             input,
         };
 
@@ -62,7 +90,7 @@ export class OpenAIService {
 
         return this.createResponse({
             model: this.getModel(),
-            instructions: CONVERSATION_TITLE_INSTRUCTIONS,
+            instructions: buildConversationTitleInstructions(),
             input: [
                 {
                     role: "user",
