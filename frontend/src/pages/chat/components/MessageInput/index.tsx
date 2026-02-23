@@ -13,6 +13,7 @@ type MessageInputProps = {
   onAddPendingFiles: (files: FileList | null) => void;
   onRemovePendingFile: (fileIndex: number) => void;
   onSend: () => Promise<boolean>;
+  onCancel: () => void;
 };
 
 const IMAGE_TYPE_PREFIX = "image/";
@@ -33,7 +34,8 @@ export function MessageInput({
   onPromptChange,
   onAddPendingFiles,
   onRemovePendingFile,
-  onSend
+  onSend,
+  onCancel
 }: MessageInputProps) {
   const pendingPreviews = useMemo<PendingFilePreview[]>(
     () =>
@@ -56,6 +58,7 @@ export function MessageInput({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (sending) return;
     void onSend();
   }
 
@@ -138,9 +141,18 @@ export function MessageInput({
           onKeyDown={handlePromptKeyDown}
         />
 
-        <S.SendButton type="submit" disabled={!canSend} aria-label="Enviar mensagem">
+        <S.SendButton
+          type={sending ? "button" : "submit"}
+          onClick={sending ? onCancel : undefined}
+          disabled={sending ? false : !canSend}
+          aria-label={sending ? "Cancelar resposta" : "Enviar mensagem"}
+          title={sending ? "Cancelar resposta" : "Enviar mensagem"}
+          $variant={sending ? "cancel" : "send"}
+        >
           {sending ? (
-            <S.SendSpinner />
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="8" y="8" width="8" height="8" rx="1.8" />
+            </svg>
           ) : (
             <svg viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M12 17V7" />

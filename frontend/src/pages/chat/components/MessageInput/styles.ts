@@ -212,12 +212,17 @@ export const AttachInput = styled.input`
   display: none;
 `;
 
-export const SendButton = styled.button`
+export const SendButton = styled.button<{ $variant?: "send" | "cancel" }>`
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(98, 138, 209, 0.64);
+  border: 1px solid
+    ${({ $variant }) =>
+      $variant === "cancel" ? "rgba(214, 97, 97, 0.68)" : "rgba(98, 138, 209, 0.64)"};
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(82, 131, 223, 0.96), rgba(50, 99, 214, 0.94));
+  background: ${({ $variant }) =>
+    $variant === "cancel"
+      ? "linear-gradient(180deg, rgba(216, 97, 97, 0.96), rgba(177, 66, 66, 0.94))"
+      : "linear-gradient(180deg, rgba(82, 131, 223, 0.96), rgba(50, 99, 214, 0.94))"};
   color: #f4f8ff;
   display: inline-flex;
   align-items: center;
@@ -237,7 +242,8 @@ export const SendButton = styled.button`
   }
 
   &:hover {
-    border-color: rgba(123, 168, 246, 0.92);
+    border-color: ${({ $variant }) =>
+      $variant === "cancel" ? "rgba(228, 118, 118, 0.9)" : "rgba(123, 168, 246, 0.92)"};
     filter: brightness(1.04);
   }
 

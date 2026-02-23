@@ -333,6 +333,7 @@ export default function ChatPage() {
           onAddPendingFiles={chat.addPendingFiles}
           onRemovePendingFile={chat.removePendingFile}
           onSend={handleSendMessage}
+          onCancel={chat.cancelSendingMessage}
         />
 
         {chat.error && <S.ErrorMessage>{chat.error}</S.ErrorMessage>}

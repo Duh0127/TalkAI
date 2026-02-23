@@ -40,6 +40,8 @@ export function useChat() {
   const [updatingMessageIds, setUpdatingMessageIds] = useState<number[]>([]);
   const [error, setError] = useState<string | null>(null);
   const skipNextMessagesLoadConversationId = useRef<number | null>(null);
+  const streamAbortControllerRef = useRef<AbortController | null>(null);
+  const userCancelledStreamRef = useRef(false);
 
   const activeConversation = useMemo(
     () => conversations.find((item) => item.id === activeConversationId) ?? null,
@@ -61,6 +63,14 @@ export function useChat() {
 
   useEffect(() => {
     void loadConversations();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      streamAbortControllerRef.current?.abort();
+      streamAbortControllerRef.current = null;
+      userCancelledStreamRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -167,6 +177,13 @@ export function useChat() {
 
   function updatePrompt(value: string) {
     setPrompt(value);
+  }
+
+  function cancelSendingMessage() {
+    if (!sending) return;
+
+    userCancelledStreamRef.current = true;
+    streamAbortControllerRef.current?.abort();
   }
 
   function addPendingFiles(files: FileList | null) {
@@ -465,20 +482,25 @@ export function useChat() {
     setSending(true);
     setError(null);
 
-    try {
-      let streamErrorMessage: string | null = null;
-      let streamedConversationName = "";
-      let streamedConversationId: number | null = currentConversationId;
-      let streamedUserMessageId: number | null = null;
-      let streamedAssistantMessageId: number | null = null;
-      let streamedAssistantContent = "";
+    const abortController = new AbortController();
+    streamAbortControllerRef.current = abortController;
+    userCancelledStreamRef.current = false;
 
+    let streamErrorMessage: string | null = null;
+    let streamedConversationName = "";
+    let streamedConversationId: number | null = currentConversationId;
+    let streamedUserMessageId: number | null = null;
+    let streamedAssistantMessageId: number | null = null;
+    let streamedAssistantContent = "";
+
+    try {
       await sendChatbotMessageStream({
         prompt: trimmedPrompt,
         conversationId: currentConversationId,
         editingMessageId: editingMessageId,
         files: filesToSend
       }, {
+        signal: abortController.signal,
         onEvent: (event) => {
           if (event.type === "chat-stream") {
             const chunk = toStreamContentString(event.content);
@@ -660,6 +682,61 @@ export function useChat() {
 
       return true;
     } catch (requestError) {
+      const userCancelledStream =
+        userCancelledStreamRef.current && isStreamAbortError(requestError);
+
+      if (userCancelledStream) {
+        const resolvedConversationId = streamedConversationId ?? currentConversationId;
+        const canceledAssistantContent = streamedAssistantContent.trim();
+
+        if (resolvedConversationId) {
+          setActiveConversationId((currentId) => {
+            if (currentId === resolvedConversationId) return currentId;
+
+            skipNextMessagesLoadConversationId.current = resolvedConversationId;
+            return resolvedConversationId;
+          });
+
+          await loadMessages(resolvedConversationId);
+
+          if (canceledAssistantContent) {
+            setMessages((currentMessages) => [
+              ...currentMessages,
+              {
+                id: optimisticAssistantMessageId,
+                conversationId: resolvedConversationId,
+                role: "assistant",
+                content: canceledAssistantContent,
+                files: [],
+                date: new Date().toISOString(),
+                loading: false
+              }
+            ]);
+          }
+
+          touchConversation(resolvedConversationId);
+          return false;
+        }
+
+        setMessages(previousMessages);
+        if (!editingMessage) {
+          setPrompt(previousPrompt);
+          setPendingFiles(previousPendingFiles);
+        }
+
+        if (currentConversationId === null && optimisticConversationId !== null) {
+          setConversations((currentConversations) =>
+            currentConversations.filter((conversation) => conversation.id !== optimisticConversationId)
+          );
+          setActiveConversationId((currentId) =>
+            currentId === optimisticConversationId ? null : currentId
+          );
+        }
+
+        await loadConversations();
+        return false;
+      }
+
       if (editingMessage && currentConversationId) {
         await loadMessages(currentConversationId);
       } else {
@@ -682,6 +759,8 @@ export function useChat() {
       setError((requestError as Error).message);
       return false;
     } finally {
+      streamAbortControllerRef.current = null;
+      userCancelledStreamRef.current = false;
       setSending(false);
     }
   }
@@ -717,6 +796,7 @@ export function useChat() {
     renameActiveConversation,
     clearActiveConversation,
     exportActiveConversationPdf,
+    cancelSendingMessage,
     sendMessage
   };
 }
@@ -812,4 +892,9 @@ function dedupeMessagesById(messages: Message[]): Message[] {
   }
 
   return nextMessages;
+}
+
+function isStreamAbortError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  return error.message.trim().toLowerCase() === "requisicao de stream cancelada ou expirou.";
 }
