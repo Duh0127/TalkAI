@@ -27,19 +27,15 @@ export const Layout = styled.div`
   }
 `;
 
-export const SidebarBackdrop = styled.button<{ $visible: boolean }>`
+export const SidebarBackdrop = styled.div<{ $visible: boolean }>`
   display: none;
 
   @media (max-width: 980px) {
     display: ${({ $visible }) => ($visible ? "block" : "none")};
     position: fixed;
     inset: 0;
-    border: none;
     background: rgba(2, 7, 15, 0.55);
     z-index: 60;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
   }
 `;
 
@@ -107,35 +103,6 @@ export const MobileTitleInput = styled.input`
   }
 `;
 
-export const MenuButton = styled.button`
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(106, 145, 212, 0.34);
-  border-radius: 9px;
-  background: rgba(12, 21, 34, 0.92);
-  color: rgba(217, 229, 247, 0.9);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    border-color: rgba(123, 168, 246, 0.84);
-    background: rgba(15, 28, 46, 0.96);
-  }
-`;
-
 export const MobileToolbarTitle = styled.p`
   margin: 0;
   color: rgba(214, 230, 255, 0.9);
@@ -145,41 +112,6 @@ export const MobileToolbarTitle = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
-
-export const ToolbarActionButton = styled.button<{ $danger?: boolean }>`
-  width: 34px;
-  height: 34px;
-  border: 1px solid
-    ${({ $danger }) => ($danger ? "rgba(217, 111, 111, 0.45)" : "rgba(106, 145, 212, 0.34)")};
-  border-radius: 9px;
-  background: ${({ $danger }) => ($danger ? "rgba(117, 38, 38, 0.35)" : "rgba(12, 21, 34, 0.92)")};
-  color: ${({ $danger }) => ($danger ? "rgba(255, 214, 214, 0.94)" : "rgba(217, 229, 247, 0.9)")};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-
-  svg {
-    width: 16px;
-    height: 16px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    border-color: ${({ $danger }) => ($danger ? "rgba(232, 140, 140, 0.84)" : "rgba(123, 168, 246, 0.84)")};
-    background: ${({ $danger }) => ($danger ? "rgba(141, 44, 44, 0.48)" : "rgba(15, 28, 46, 0.96)")};
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
 `;
 
 export const ToolbarActionSpinner = styled.span`

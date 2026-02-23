@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useMemo } from "react";
+import { Button } from "../../../../components/Button";
 import * as S from "./styles";
 
 type MessageInputProps = {
@@ -105,24 +106,43 @@ export function MessageInput({
                 </S.PendingFileMeta>
               </S.PendingFileInfo>
 
-              <S.RemovePendingFileButton
+              <Button
                 type="button"
                 onClick={() => onRemovePendingFile(index)}
                 title={`Remover ${preview.file.name}`}
                 aria-label={`Remover ${preview.file.name}`}
+                size="xs"
+                iconOnly
+                radius="sm"
+                width="24px"
+                height="24px"
+                minWidth="24px"
+                minHeight="24px"
+                iconSize={14}
               >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M18 6L6 18" />
                   <path d="M6 6L18 18" />
                 </svg>
-              </S.RemovePendingFileButton>
+              </Button>
             </S.PendingFile>
           ))}
         </S.PendingFiles>
       )}
 
       <S.InputRow>
-        <S.AttachButton aria-label="Adicionar anexos">
+        <Button
+          as="label"
+          aria-label="Adicionar anexos"
+          size="md"
+          iconOnly
+          radius="md"
+          width="36px"
+          height="36px"
+          minWidth="36px"
+          minHeight="36px"
+          iconSize={17}
+        >
           <svg viewBox="0 0 24 24" fill="none" aria-hidden>
             <path d="M12 5V19M5 12H19" />
           </svg>
@@ -132,7 +152,7 @@ export function MessageInput({
             multiple
             onChange={handleFileChange}
           />
-        </S.AttachButton>
+        </Button>
 
         <S.PromptInput
           placeholder="Pergunte qualquer coisa..."
@@ -141,13 +161,22 @@ export function MessageInput({
           onKeyDown={handlePromptKeyDown}
         />
 
-        <S.SendButton
+        <Button
           type={sending ? "button" : "submit"}
           onClick={sending ? onCancel : undefined}
           disabled={sending ? false : !canSend}
           aria-label={sending ? "Cancelar resposta" : "Enviar mensagem"}
           title={sending ? "Cancelar resposta" : "Enviar mensagem"}
-          $variant={sending ? "cancel" : "send"}
+          tone={sending ? "danger" : "primary"}
+          variant="solid"
+          size="md"
+          iconOnly
+          radius="md"
+          width="36px"
+          height="36px"
+          minWidth="36px"
+          minHeight="36px"
+          iconSize={18}
         >
           {sending ? (
             <svg viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -159,7 +188,7 @@ export function MessageInput({
               <path d="M8 11L12 7L16 11" />
             </svg>
           )}
-        </S.SendButton>
+        </Button>
       </S.InputRow>
     </S.Composer>
   );

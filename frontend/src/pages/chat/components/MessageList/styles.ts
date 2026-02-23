@@ -227,34 +227,6 @@ export const MessageEditActions = styled.div`
   gap: 8px;
 `;
 
-export const EditorButton = styled.button<{ $primary?: boolean }>`
-  height: 30px;
-  border-radius: 999px;
-  border: 1px solid
-    ${({ $primary }) => ($primary ? "rgba(114, 160, 238, 0.88)" : "rgba(106, 145, 212, 0.38)")};
-  background: ${({ $primary }) =>
-    $primary
-      ? "linear-gradient(180deg, rgba(76, 124, 214, 0.9), rgba(47, 95, 193, 0.9))"
-      : "rgba(11, 20, 34, 0.86)"};
-  color: ${({ $primary }) => ($primary ? "#f4f8ff" : "#dceaff")};
-  padding: 0 12px;
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: filter 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-
-  &:hover {
-    filter: brightness(1.05);
-    border-color: rgba(132, 176, 250, 0.96);
-  }
-
-  &:disabled {
-    opacity: 0.62;
-    cursor: not-allowed;
-    filter: none;
-  }
-`;
-
 export const MessageFiles = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -287,42 +259,4 @@ export const MessageFooter = styled.div`
 export const MessageTime = styled.small`
   color: rgba(152, 176, 208, 0.84);
   font-size: 10.5px;
-`;
-
-export const MessageActionButton = styled.button`
-  min-width: 30px;
-  height: 27px;
-  border: 1px solid rgba(107, 147, 213, 0.42);
-  border-radius: 999px;
-  background: rgba(11, 20, 34, 0.82);
-  color: #dbe9ff;
-  font-size: 10.5px;
-  padding: 0 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  cursor: pointer;
-  opacity: 0.9;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    opacity: 1;
-    border-color: rgba(123, 168, 246, 0.9);
-    background: rgba(15, 28, 46, 0.96);
-  }
-
-  &:disabled {
-    opacity: 0.62;
-    cursor: not-allowed;
-  }
 `;

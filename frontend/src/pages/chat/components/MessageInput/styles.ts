@@ -1,13 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
+import styled from "styled-components";
 
 export const Composer = styled.form<{
   $layout: "docked" | "centered";
@@ -122,34 +113,6 @@ export const PendingFileMeta = styled.span`
   text-transform: uppercase;
 `;
 
-export const RemovePendingFileButton = styled.button`
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  border: 1px solid rgba(106, 145, 212, 0.32);
-  background: rgba(12, 21, 34, 0.88);
-  color: rgba(221, 234, 254, 0.9);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-  }
-
-  &:hover {
-    border-color: rgba(123, 168, 246, 0.84);
-    background: rgba(15, 28, 46, 0.96);
-  }
-`;
-
 export const InputRow = styled.div`
   border: 1px solid rgba(103, 145, 210, 0.34);
   border-radius: 14px;
@@ -180,87 +143,6 @@ export const PromptInput = styled.textarea`
   }
 `;
 
-export const AttachButton = styled.label`
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(106, 145, 212, 0.32);
-  background: rgba(12, 21, 34, 0.88);
-  color: rgba(213, 229, 250, 0.92);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: border-color 0.2s ease, background 0.2s ease;
-
-  svg {
-    width: 17px;
-    height: 17px;
-    stroke: currentColor;
-    stroke-width: 1.9;
-    stroke-linecap: round;
-  }
-
-  &:hover {
-    border-color: rgba(123, 168, 246, 0.84);
-    background: rgba(15, 28, 46, 0.96);
-  }
-`;
-
 export const AttachInput = styled.input`
   display: none;
-`;
-
-export const SendButton = styled.button<{ $variant?: "send" | "cancel" }>`
-  width: 36px;
-  height: 36px;
-  border: 1px solid
-    ${({ $variant }) =>
-      $variant === "cancel" ? "rgba(214, 97, 97, 0.68)" : "rgba(98, 138, 209, 0.64)"};
-  border-radius: 10px;
-  background: ${({ $variant }) =>
-    $variant === "cancel"
-      ? "linear-gradient(180deg, rgba(216, 97, 97, 0.96), rgba(177, 66, 66, 0.94))"
-      : "linear-gradient(180deg, rgba(82, 131, 223, 0.96), rgba(50, 99, 214, 0.94))"};
-  color: #f4f8ff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: filter 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
-
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    border-color: ${({ $variant }) =>
-      $variant === "cancel" ? "rgba(228, 118, 118, 0.9)" : "rgba(123, 168, 246, 0.92)"};
-    filter: brightness(1.04);
-  }
-
-  &:disabled {
-    background: rgba(83, 106, 142, 0.42);
-    border-color: rgba(103, 127, 164, 0.45);
-    color: rgba(210, 223, 244, 0.72);
-    cursor: not-allowed;
-    filter: none;
-  }
-`;
-
-export const SendSpinner = styled.span`
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(232, 241, 255, 0.36);
-  border-top-color: #f4f8ff;
-  border-radius: 999px;
-  animation: ${spin} 0.8s linear infinite;
 `;

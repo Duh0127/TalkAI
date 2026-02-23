@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "../../../../components/Button";
 import { ConfirmModal } from "../../../../components/ConfirmModal";
 import { formatHour } from "../../../../services/date.service";
 import { Conversation } from "../../../../types/chat.types";
@@ -72,21 +73,43 @@ export function ConversationSidebar({
       <S.SidebarTop>
         <S.SidebarTitleRow>
           <S.LogoTitle>TalkAI</S.LogoTitle>
-          <S.MobileCloseButton
-            type="button"
-            title="Fechar menu de conversas"
-            aria-label="Fechar menu de conversas"
-            onClick={onRequestClose}
-          >
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M18 6L6 18" />
-              <path d="M6 6L18 18" />
-            </svg>
-          </S.MobileCloseButton>
+          {compactMode && (
+            <Button
+              type="button"
+              title="Fechar menu de conversas"
+              aria-label="Fechar menu de conversas"
+              onClick={onRequestClose}
+              size="sm"
+              iconOnly
+              width="30px"
+              height="30px"
+              minWidth="30px"
+              minHeight="30px"
+              radius="sm"
+              iconSize={15}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M18 6L6 18" />
+                <path d="M6 6L18 18" />
+              </svg>
+            </Button>
+          )}
         </S.SidebarTitleRow>
-        <S.PrimaryButton type="button" onClick={handleCreateConversation}>
+        <Button
+          type="button"
+          onClick={handleCreateConversation}
+          size="md"
+          radius="md"
+          tone="primary"
+          variant="soft"
+          fullWidth
+          fontSize="13px"
+          fontWeight={600}
+          height="38px"
+          minHeight="38px"
+        >
           Nova conversa
-        </S.PrimaryButton>
+        </Button>
         <S.SearchInput
           placeholder="Buscar conversa..."
           value={conversationQuery}
@@ -104,14 +127,35 @@ export function ConversationSidebar({
         {!loadingConversations &&
           conversations.map((conversation) => {
             const deletingConversation = deletingConversationIds.includes(conversation.id);
+            const activeConversation = conversation.id === activeConversationId;
 
             return (
-              <S.ConversationRow key={conversation.id} $active={conversation.id === activeConversationId}>
-                <S.ConversationSelectButton
+              <S.ConversationRow key={conversation.id} $active={activeConversation}>
+                <Button
                   type="button"
                   onClick={() => handleSelectConversation(conversation.id)}
-                  $active={conversation.id === activeConversationId}
+                  active={activeConversation}
                   disabled={deletingConversation}
+                  fullWidth
+                  align="start"
+                  size="md"
+                  radius="md"
+                  variant="ghost"
+                  tone="neutral"
+                  height="38px"
+                  minHeight="38px"
+                  padding="0 9px"
+                  colorOverrides={{
+                    border: "rgba(106, 145, 212, 0)",
+                    hoverBorder: "rgba(106, 145, 212, 0)",
+                    activeBorder: "rgba(106, 145, 212, 0)",
+                    background: activeConversation ? "rgba(86, 133, 214, 0.2)" : "transparent",
+                    hoverBackground: "rgba(86, 133, 214, 0.18)",
+                    activeBackground: "rgba(86, 133, 214, 0.2)",
+                    text: "var(--text-main)",
+                    hoverText: "var(--text-main)",
+                    activeText: "var(--text-main)"
+                  }}
                 >
                   <S.ConversationSummary>
                     <S.ConversationName>{conversation.name}</S.ConversationName>
@@ -119,14 +163,22 @@ export function ConversationSidebar({
                       {formatHour(conversation.updatedAt || conversation.createdAt)}
                     </S.ConversationTime>
                   </S.ConversationSummary>
-                </S.ConversationSelectButton>
+                </Button>
 
-                <S.ConversationDeleteButton
+                <Button
                   type="button"
                   title="Excluir conversa"
                   aria-label={`Excluir conversa ${conversation.name}`}
                   onClick={() => setTargetConversation(conversation)}
                   disabled={deletingConversation}
+                  size="sm"
+                  iconOnly
+                  width="30px"
+                  height="30px"
+                  minWidth="30px"
+                  minHeight="30px"
+                  radius="sm"
+                  iconSize={14}
                 >
                   {deletingConversation ? (
                     <S.TinySpinner aria-hidden />
@@ -139,7 +191,7 @@ export function ConversationSidebar({
                       <path d="M14 10V16" />
                     </svg>
                   )}
-                </S.ConversationDeleteButton>
+                </Button>
               </S.ConversationRow>
             );
           })}

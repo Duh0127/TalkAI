@@ -64,57 +64,6 @@ export const LogoTitle = styled.h1`
   letter-spacing: 0;
 `;
 
-export const MobileCloseButton = styled.button`
-  display: none;
-
-  @media (max-width: 980px) {
-    width: 30px;
-    height: 30px;
-    border: 1px solid rgba(106, 145, 212, 0.34);
-    border-radius: 8px;
-    background: rgba(12, 21, 34, 0.92);
-    color: rgba(217, 229, 247, 0.9);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
-
-    svg {
-      width: 15px;
-      height: 15px;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    &:hover {
-      border-color: rgba(123, 168, 246, 0.84);
-      background: rgba(15, 28, 46, 0.96);
-    }
-  }
-`;
-
-export const PrimaryButton = styled.button`
-  border: 1px solid rgba(98, 138, 209, 0.6);
-  border-radius: 10px;
-  background: rgba(64, 112, 198, 0.28);
-  color: #d7e6ff;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 9px 12px;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    border-color: rgba(115, 159, 235, 0.9);
-    background: rgba(64, 112, 198, 0.4);
-  }
-`;
-
 export const SearchInput = styled.input`
   width: 100%;
   border: 1px solid rgba(103, 145, 210, 0.3);
@@ -185,29 +134,6 @@ export const ConversationRow = styled.li<{ $active: boolean }>`
     `}
 `;
 
-export const ConversationSelectButton = styled.button<{ $active: boolean }>`
-  border: none;
-  border-radius: 9px;
-  background: ${({ $active }) => ($active ? "rgba(86, 133, 214, 0.2)" : "transparent")};
-  color: var(--text-main);
-  text-align: left;
-  display: block;
-  width: 100%;
-  padding: 9px;
-  cursor: pointer;
-  min-width: 0;
-  transition: background 0.2s ease, opacity 0.2s ease;
-
-  &:hover {
-    background: rgba(86, 133, 214, 0.18);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
 export const ConversationSummary = styled.div`
   display: flex;
   align-items: baseline;
@@ -230,44 +156,6 @@ export const ConversationTime = styled.small`
   color: var(--text-soft);
   font-size: 10.5px;
   white-space: nowrap;
-`;
-
-export const ConversationDeleteButton = styled.button`
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(106, 145, 212, 0.34);
-  border-radius: 8px;
-  background: rgba(12, 21, 34, 0.92);
-  color: #dceaff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-  flex-shrink: 0;
-  opacity: 0.72;
-  transition: border-color 0.2s ease, opacity 0.2s ease, background 0.2s ease;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    opacity: 1;
-    border-color: rgba(123, 168, 246, 0.86);
-    background: rgba(16, 29, 47, 0.96);
-  }
-
-  &:disabled {
-    opacity: 0.62;
-    cursor: not-allowed;
-    transform: none;
-  }
 `;
 
 export const TinySpinner = styled.span`

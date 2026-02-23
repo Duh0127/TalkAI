@@ -1,4 +1,5 @@
 import { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "../../../../components/Button";
 import { MarkdownRender } from "../../../../components/MarkdownRender";
 import { Spinner } from "../../../../components/Spinner";
 import { formatHour } from "../../../../services/date.service";
@@ -266,21 +267,34 @@ export function MessageList({
                         autoFocus
                       />
                       <S.MessageEditActions>
-                        <S.EditorButton
+                        <Button
                           type="button"
                           onClick={handleCancelEdit}
                           disabled={savingEditingMessage}
+                          size="sm"
+                          radius="pill"
+                          variant="soft"
+                          tone="neutral"
+                          fontSize="11.5px"
+                          fontWeight={600}
+                          padding="0 12px"
                         >
                           Cancelar
-                        </S.EditorButton>
-                        <S.EditorButton
+                        </Button>
+                        <Button
                           type="button"
-                          $primary
                           onClick={() => void handleConfirmEditMessage()}
                           disabled={savingEditingMessage || editingContent.trim().length === 0}
+                          size="sm"
+                          radius="pill"
+                          variant="solid"
+                          tone="primary"
+                          fontSize="11.5px"
+                          fontWeight={600}
+                          padding="0 12px"
                         >
                           {savingEditingMessage ? "Salvando..." : "Salvar"}
-                        </S.EditorButton>
+                        </Button>
                       </S.MessageEditActions>
                     </>
                   ) : (
@@ -310,12 +324,23 @@ export function MessageList({
 
                       {!editing && (
                         <S.MessageActions $visible={showActions}>
-                          <S.MessageActionButton
+                          <Button
                             type="button"
                             onClick={() => void handleCopyMessage(message)}
                             disabled={updating}
                             title={copied ? "Mensagem copiada" : "Copiar mensagem"}
                             aria-label={copied ? "Mensagem copiada" : "Copiar mensagem"}
+                            size="xs"
+                            radius="pill"
+                            variant="soft"
+                            tone="neutral"
+                            minWidth="30px"
+                            height="27px"
+                            minHeight="27px"
+                            padding="0 10px"
+                            fontSize="10.5px"
+                            iconSize={14}
+                            gap="5px"
                           >
                             {copied ? (
                               "Copiado"
@@ -325,21 +350,32 @@ export function MessageList({
                                 <path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
                               </svg>
                             )}
-                          </S.MessageActionButton>
+                          </Button>
 
                           {!assistantMessage && (
-                            <S.MessageActionButton
+                            <Button
                               type="button"
                               onClick={() => handleStartEdit(message)}
                               disabled={updating}
                               title="Editar mensagem"
                               aria-label="Editar mensagem"
+                              size="xs"
+                              radius="pill"
+                              variant="soft"
+                              tone="neutral"
+                              minWidth="30px"
+                              height="27px"
+                              minHeight="27px"
+                              padding="0 10px"
+                              fontSize="10.5px"
+                              iconSize={14}
+                              gap="5px"
                             >
                               <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                                 <path d="M12 20H21" />
                                 <path d="M16.5 3.5A2.12 2.12 0 1 1 19.5 6.5L7 19l-4 1 1-4 12.5-12.5Z" />
                               </svg>
-                            </S.MessageActionButton>
+                            </Button>
                           )}
                         </S.MessageActions>
                       )}

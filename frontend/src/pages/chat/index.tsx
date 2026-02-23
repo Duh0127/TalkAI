@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "../../components/Button";
 import { ConfirmModal } from "../../components/ConfirmModal";
 import * as S from "./styles";
 import { useChat } from "./hooks/useChat";
@@ -144,12 +145,29 @@ export default function ChatPage() {
 
   return (
     <S.Layout>
-      <S.SidebarBackdrop
-        type="button"
-        aria-label="Fechar menu de conversas"
-        $visible={compactMode && sidebarOpen}
-        onClick={() => setSidebarOpen(false)}
-      />
+      <S.SidebarBackdrop $visible={compactMode && sidebarOpen}>
+        <Button
+          type="button"
+          aria-label="Fechar menu de conversas"
+          title="Fechar menu de conversas"
+          onClick={() => setSidebarOpen(false)}
+          width="100%"
+          height="100%"
+          minWidth="100%"
+          minHeight="100%"
+          radius="sm"
+          variant="ghost"
+          tone="neutral"
+          colorOverrides={{
+            border: "transparent",
+            background: "transparent",
+            hoverBorder: "transparent",
+            hoverBackground: "transparent",
+            activeBorder: "transparent",
+            activeBackground: "transparent"
+          }}
+        />
+      </S.SidebarBackdrop>
 
       <ConversationSidebar
         conversations={chat.filteredConversations}
@@ -170,12 +188,20 @@ export default function ChatPage() {
         {compactMode && (
           <S.MobileToolbar>
             <S.MobileToolbarLeft>
-              <S.MenuButton
+              <Button
                 type="button"
                 title={sidebarOpen ? "Fechar conversas" : "Abrir conversas"}
                 aria-label={sidebarOpen ? "Fechar conversas" : "Abrir conversas"}
                 aria-expanded={sidebarOpen}
                 onClick={() => setSidebarOpen((currentValue) => !currentValue)}
+                size="md"
+                iconOnly
+                width="36px"
+                height="36px"
+                minWidth="36px"
+                minHeight="36px"
+                radius="md"
+                iconSize={18}
               >
                 {sidebarOpen ? (
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -189,7 +215,7 @@ export default function ChatPage() {
                     <path d="M4 17H20" />
                   </svg>
                 )}
-              </S.MenuButton>
+              </Button>
               {mobileEditingTitle ? (
                 <S.MobileTitleInput
                   value={mobileDraftName}
@@ -216,52 +242,84 @@ export default function ChatPage() {
             <S.MobileToolbarActions>
               {mobileEditingTitle ? (
                 <>
-                  <S.ToolbarActionButton
+                  <Button
                     type="button"
                     title="Confirmar nome"
                     aria-label="Confirmar nome"
                     onClick={() => void handleMobileConfirmRename()}
                     disabled={chat.renamingConversation}
+                    size="md"
+                    iconOnly
+                    width="34px"
+                    height="34px"
+                    minWidth="34px"
+                    minHeight="34px"
+                    radius="md"
+                    iconSize={16}
                   >
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M5 12L10 17L19 8" />
                     </svg>
-                  </S.ToolbarActionButton>
+                  </Button>
 
-                  <S.ToolbarActionButton
+                  <Button
                     type="button"
                     title="Cancelar edicao"
                     aria-label="Cancelar edicao"
                     onClick={handleMobileCancelRename}
                     disabled={chat.renamingConversation}
+                    size="md"
+                    iconOnly
+                    width="34px"
+                    height="34px"
+                    minWidth="34px"
+                    minHeight="34px"
+                    radius="md"
+                    iconSize={16}
                   >
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M18 6L6 18" />
                       <path d="M6 6L18 18" />
                     </svg>
-                  </S.ToolbarActionButton>
+                  </Button>
                 </>
               ) : (
-                <S.ToolbarActionButton
+                <Button
                   type="button"
                   title="Editar nome da conversa"
                   aria-label="Editar nome da conversa"
                   onClick={handleMobileStartRename}
                   disabled={!chat.activeConversation || chat.renamingConversation || chat.deletingActiveConversation}
+                  size="md"
+                  iconOnly
+                  width="34px"
+                  height="34px"
+                  minWidth="34px"
+                  minHeight="34px"
+                  radius="md"
+                  iconSize={16}
                 >
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M12 20H21" />
                     <path d="M16.5 3.5A2.12 2.12 0 1 1 19.5 6.5L7 19l-4 1 1-4 12.5-12.5Z" />
                   </svg>
-                </S.ToolbarActionButton>
+                </Button>
               )}
 
-              <S.ToolbarActionButton
+              <Button
                 type="button"
                 title="Exportar conversa em PDF"
                 aria-label="Exportar conversa em PDF"
                 onClick={() => void chat.exportActiveConversationPdf()}
                 disabled={!canExportConversation || chat.exportingConversation || chat.deletingActiveConversation}
+                size="md"
+                iconOnly
+                width="34px"
+                height="34px"
+                minWidth="34px"
+                minHeight="34px"
+                radius="md"
+                iconSize={16}
               >
                 {chat.exportingConversation ? (
                   <S.ToolbarActionSpinner aria-hidden />
@@ -272,15 +330,24 @@ export default function ChatPage() {
                     <path d="M5 18H19" />
                   </svg>
                 )}
-              </S.ToolbarActionButton>
+              </Button>
 
-              <S.ToolbarActionButton
+              <Button
                 type="button"
-                $danger
                 title="Limpar conversa"
                 aria-label="Limpar conversa"
                 onClick={handleMobileOpenClearModal}
                 disabled={!chat.activeConversation || chat.clearingConversation || chat.deletingActiveConversation}
+                size="md"
+                iconOnly
+                width="34px"
+                height="34px"
+                minWidth="34px"
+                minHeight="34px"
+                radius="md"
+                iconSize={16}
+                tone="danger"
+                variant="soft"
               >
                 {chat.clearingConversation ? (
                   <S.ToolbarActionSpinner aria-hidden />
@@ -292,7 +359,7 @@ export default function ChatPage() {
                     <path d="M10 10H14" />
                   </svg>
                 )}
-              </S.ToolbarActionButton>
+              </Button>
             </S.MobileToolbarActions>
           </S.MobileToolbar>
         )}

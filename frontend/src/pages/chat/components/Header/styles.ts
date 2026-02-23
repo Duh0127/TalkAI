@@ -72,91 +72,10 @@ export const TitleInput = styled.input`
   }
 `;
 
-export const IconButton = styled.button`
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(106, 145, 212, 0.34);
-  border-radius: 8px;
-  background: rgba(11, 20, 34, 0.92);
-  color: rgba(217, 229, 247, 0.9);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-
-  svg {
-    width: 15px;
-    height: 15px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  &:hover {
-    border-color: rgba(123, 168, 246, 0.84);
-    background: rgba(15, 28, 46, 0.96);
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-`;
-
 export const HeaderActions = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-export const ExportButton = styled.button`
-  border: 1px solid rgba(98, 138, 209, 0.54);
-  border-radius: 999px;
-  background: rgba(18, 34, 58, 0.56);
-  color: #dceaff;
-  font-family: inherit;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-
-  &:hover {
-    border-color: rgba(123, 168, 246, 0.9);
-    background: rgba(27, 51, 87, 0.7);
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-`;
-
-export const ClearButton = styled.button`
-  border: 1px solid rgba(98, 138, 209, 0.5);
-  border-radius: 999px;
-  background: rgba(64, 112, 198, 0.24);
-  color: #d4e4ff;
-  font-family: inherit;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-
-  &:hover {
-    border-color: rgba(118, 161, 236, 0.88);
-    background: rgba(64, 112, 198, 0.36);
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
 `;
 
 export const ModelChip = styled.span`

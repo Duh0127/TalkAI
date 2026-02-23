@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "../../../../components/Button";
 import { ConfirmModal } from "../../../../components/ConfirmModal";
 import { Conversation } from "../../../../types/chat.types";
 import * as S from "./styles";
@@ -93,45 +94,69 @@ export function ChatHeader({
                 disabled={renamingConversation}
               />
 
-              <S.IconButton
+              <Button
                 type="button"
                 title="Confirmar nome"
                 aria-label="Confirmar nome"
                 onClick={() => void handleConfirmRename()}
                 disabled={renamingConversation}
+                size="sm"
+                iconOnly
+                width="30px"
+                height="30px"
+                minWidth="30px"
+                minHeight="30px"
+                radius="sm"
+                iconSize={15}
               >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M5 12L10 17L19 8" />
                 </svg>
-              </S.IconButton>
+              </Button>
 
-              <S.IconButton
+              <Button
                 type="button"
                 title="Cancelar edicao"
                 aria-label="Cancelar edicao"
                 onClick={handleCancelRename}
                 disabled={renamingConversation}
+                size="sm"
+                iconOnly
+                width="30px"
+                height="30px"
+                minWidth="30px"
+                minHeight="30px"
+                radius="sm"
+                iconSize={15}
               >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M18 6L6 18" />
                   <path d="M6 6L18 18" />
                 </svg>
-              </S.IconButton>
+              </Button>
             </S.EditRow>
           ) : (
             <S.TitleRow>
               <S.Title>{activeConversation.name}</S.Title>
-              <S.IconButton
+              <Button
                 type="button"
                 title="Editar nome da conversa"
                 aria-label="Editar nome da conversa"
                 onClick={handleStartEditing}
+                size="sm"
+                iconOnly
+                width="30px"
+                height="30px"
+                minWidth="30px"
+                minHeight="30px"
+                radius="sm"
+                iconSize={15}
               >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M12 20H21" />
                   <path d="M16.5 3.5A2.12 2.12 0 1 1 19.5 6.5L7 19l-4 1 1-4 12.5-12.5Z" />
                 </svg>
-              </S.IconButton>
+              </Button>
             </S.TitleRow>
           )
         ) : (
@@ -140,25 +165,39 @@ export function ChatHeader({
       </S.HeaderContent>
 
       <S.HeaderActions>
-        <S.ExportButton
+        <Button
           type="button"
           onClick={() => void onExportConversation()}
           disabled={!canExportConversation || exportingConversation || deletingActiveConversation}
+          size="md"
+          radius="pill"
+          variant="outline"
+          tone="primary"
+          fontSize="12px"
+          fontWeight={600}
+          padding="0 12px"
         >
           {exportingConversation ? "Exportando..." : "Exportar PDF"}
-        </S.ExportButton>
+        </Button>
 
-        <S.ClearButton
+        <Button
           type="button"
           onClick={handleOpenClearModal}
           disabled={!activeConversation || clearingConversation || deletingActiveConversation}
+          size="md"
+          radius="pill"
+          variant="soft"
+          tone="primary"
+          fontSize="12px"
+          fontWeight={600}
+          padding="0 12px"
         >
           {clearingConversation
             ? "Limpando..."
             : deletingActiveConversation
               ? "Removendo..."
               : "Limpar conversa"}
-        </S.ClearButton>
+        </Button>
       </S.HeaderActions>
 
       <ConfirmModal
