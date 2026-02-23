@@ -314,6 +314,7 @@ export class ChatBotController {
             content: {
                 userMessageId: Number(userMessage.id),
                 assistantMessageId: Number(assistantMessage.id),
+                userFiles: normalizeStoredFiles(userMessage.files),
             },
         });
         eventStream.sendDone();

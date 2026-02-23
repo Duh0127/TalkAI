@@ -8,7 +8,7 @@ import {
   updateConversation
 } from "../../../services/chatbot.service";
 import { exportConversationPdf } from "../../../services/pdf-export.service";
-import { Conversation, Message } from "../../../types/chat.types";
+import { ChatFile, Conversation, Message } from "../../../types/chat.types";
 import {
   filterConversations,
   MAX_FILES_PER_MESSAGE,
@@ -491,6 +491,7 @@ export function useChat() {
     let streamedConversationId: number | null = currentConversationId;
     let streamedUserMessageId: number | null = null;
     let streamedAssistantMessageId: number | null = null;
+    let streamedUserFiles: ChatFile[] | null = null;
     let streamedAssistantContent = "";
 
     try {
@@ -561,6 +562,7 @@ export function useChat() {
             const parsedMessageIds = parseMessageIdsEvent(event.content);
             streamedUserMessageId = parsedMessageIds.userMessageId;
             streamedAssistantMessageId = parsedMessageIds.assistantMessageId;
+            streamedUserFiles = parsedMessageIds.userFiles;
             return;
           }
 
@@ -641,7 +643,8 @@ export function useChat() {
             return {
               ...message,
               id: finalUserMessageId,
-              conversationId: resolvedConversationId
+              conversationId: resolvedConversationId,
+              files: streamedUserFiles ?? message.files ?? []
             };
           }
 
@@ -657,7 +660,7 @@ export function useChat() {
               conversationId: resolvedConversationId,
               role: "user",
               content: trimmedPrompt || "Mensagem com anexos.",
-              files: [],
+              files: streamedUserFiles ?? [],
               date: optimisticTimestamp
             }
           ];
@@ -855,9 +858,13 @@ function parseConversationNameEvent(value: unknown): { id: number | null; name: 
   return { id, name };
 }
 
-function parseMessageIdsEvent(value: unknown): { userMessageId: number | null; assistantMessageId: number | null } {
+function parseMessageIdsEvent(value: unknown): {
+  userMessageId: number | null;
+  assistantMessageId: number | null;
+  userFiles: ChatFile[] | null;
+} {
   if (!value || typeof value !== "object") {
-    return { userMessageId: null, assistantMessageId: null };
+    return { userMessageId: null, assistantMessageId: null, userFiles: null };
   }
 
   const typedValue = value as {
@@ -865,20 +872,40 @@ function parseMessageIdsEvent(value: unknown): { userMessageId: number | null; a
     assistantMessageId?: unknown;
     user_id?: unknown;
     assistant_id?: unknown;
+    userFiles?: unknown;
+    user_files?: unknown;
   };
 
   const userMessageId = parsePositiveInteger(typedValue.userMessageId ?? typedValue.user_id);
   const assistantMessageId = parsePositiveInteger(
     typedValue.assistantMessageId ?? typedValue.assistant_id
   );
+  const userFiles = parseStreamFiles(typedValue.userFiles ?? typedValue.user_files);
 
-  return { userMessageId, assistantMessageId };
+  return { userMessageId, assistantMessageId, userFiles };
 }
 
 function parsePositiveInteger(value: unknown): number | null {
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed <= 0) return null;
   return Math.trunc(parsed);
+}
+
+function parseStreamFiles(value: unknown): ChatFile[] | null {
+  if (value === undefined) return null;
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+
+      const name = String((item as { name?: unknown }).name ?? "").trim();
+      const url = String((item as { url?: unknown }).url ?? "").trim();
+      if (!name || !url) return null;
+
+      return { name, url };
+    })
+    .filter((item): item is ChatFile => Boolean(item));
 }
 
 function dedupeMessagesById(messages: Message[]): Message[] {
